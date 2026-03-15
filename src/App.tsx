@@ -29,7 +29,10 @@ interface ParkingData {
 }
 
 // --- Constants ---
-const FLOORS = ['지하 1층', '지하 2층', '지하 3층', '지하 4층', '지하 5층', '지상 1층', '지상 2층', '지상 3층'];
+const FLOORS = [
+  '지상 6층', '지상 5층', '지상 4층', '지상 3층', '지상 2층', '지상 1층',
+  '지하 1층', '지하 2층', '지하 3층'
+];
 const STORAGE_KEY = 'where_is_my_car_data';
 
 export default function App() {
@@ -58,22 +61,75 @@ export default function App() {
     }
   }, []);
 
-  // Save data
+  // Photo handling with compression
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setIsPhotoLoading(true);
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+
+          // Max dimensions
+          const MAX_WIDTH = 800;
+          const MAX_HEIGHT = 800;
+
+          if (width > height) {
+            if (width > MAX_WIDTH) {
+              height *= MAX_WIDTH / width;
+              width = MAX_WIDTH;
+            }
+          } else {
+            if (height > MAX_HEIGHT) {
+              width *= MAX_HEIGHT / height;
+              height = MAX_HEIGHT;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx?.drawImage(img, 0, 0, width, height);
+
+          // Compress to JPEG with 0.7 quality
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7);
+          setPhoto(compressedDataUrl);
+          setIsPhotoLoading(false);
+        };
+        img.src = event.target?.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // Save data with error handling
   const handleSave = () => {
-    const newData: ParkingData = {
-      floor,
-      pillar,
-      photo,
-      memo,
-      timestamp: Date.now(),
-    };
-    setParkingData(newData);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(newData));
-    setShowSuccess(true);
-    setTimeout(() => {
-      setShowSuccess(false);
-      setIsRecording(false);
-    }, 2000);
+    try {
+      const newData: ParkingData = {
+        floor,
+        pillar,
+        photo,
+        memo,
+        timestamp: Date.now(),
+      };
+      
+      const serializedData = JSON.stringify(newData);
+      localStorage.setItem(STORAGE_KEY, serializedData);
+      
+      setParkingData(newData);
+      setShowSuccess(true);
+      setTimeout(() => {
+        setShowSuccess(false);
+        setIsRecording(false);
+      }, 2000);
+    } catch (error) {
+      console.error('Failed to save to localStorage:', error);
+      alert('저장 공간이 부족하거나 오류가 발생했습니다. 사진 크기를 줄이거나 메모를 줄여보세요.');
+    }
   };
 
   // Clear data
@@ -85,20 +141,6 @@ export default function App() {
     setPillar('');
     setPhoto(null);
     setMemo('');
-  };
-
-  // Photo handling
-  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setIsPhotoLoading(true);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPhoto(reader.result as string);
-        setIsPhotoLoading(false);
-      };
-      reader.readAsDataURL(file);
-    }
   };
 
   const triggerCamera = () => {
@@ -180,37 +222,51 @@ export default function App() {
                 </div>
 
                 <div className="space-y-8">
-                    {/* Floor Selection - Grid of Buttons for easier one-hand use */}
+                    {/* Building-shaped Floor Selection */}
                     <div className="space-y-4">
-                      <label className="text-xs font-bold text-slate-500 uppercase tracking-[0.2em] ml-1">층수 선택</label>
-                      <div className="grid grid-cols-2 gap-4">
-                        {FLOORS.map((f) => (
-                          <button
-                            key={f}
-                            onClick={() => setFloor(f)}
-                            className={`h-16 rounded-2xl font-bold transition-all border-2 ${
-                              floor === f 
-                                ? 'bg-sky-500 border-sky-400 text-white shadow-[0_0_25px_rgba(14,165,233,0.5)] scale-[1.02] z-10' 
-                                : 'bg-[#1e293b]/40 border-white/5 text-slate-500 hover:bg-[#1e293b]/60 hover:border-white/10'
-                            }`}
-                          >
-                            {f}
-                          </button>
-                        ))}
+                      <label className="text-xs font-bold text-slate-500 uppercase tracking-[0.2em] ml-1">층수 선택 (빌딩)</label>
+                      <div className="flex flex-col gap-2 bg-slate-900/30 p-4 rounded-[24px] border border-white/5">
+                        {FLOORS.map((f) => {
+                          const isUnderground = f.startsWith('지하');
+                          return (
+                            <button
+                              key={f}
+                              onClick={() => setFloor(f)}
+                              className={`h-12 rounded-xl font-bold transition-all border ${
+                                floor === f 
+                                  ? 'bg-sky-500 border-sky-400 text-white shadow-[0_0_15px_rgba(14,165,233,0.4)] scale-[1.02] z-10' 
+                                  : isUnderground 
+                                    ? 'bg-slate-800/40 border-white/5 text-slate-400 hover:bg-slate-800/60'
+                                    : 'bg-slate-700/20 border-white/5 text-slate-300 hover:bg-slate-700/40'
+                              } ${f === '지상 1층' ? 'mb-4' : ''}`}
+                            >
+                              {f}
+                              {f === '지상 1층' && <div className="text-[8px] opacity-50 mt-[-2px]">GROUND LEVEL</div>}
+                            </button>
+                          );
+                        })}
                       </div>
                     </div>
 
-                  {/* Pillar Number */}
-                  <div className="space-y-4">
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-[0.2em] ml-1">구역 / 기둥 번호</label>
-                    <input 
-                      type="text"
-                      placeholder="예: A-03, 12번 기둥"
-                      value={pillar}
-                      onChange={(e) => setPillar(e.target.value)}
-                      className="w-full h-16 bg-slate-900/50 border border-white/5 rounded-2xl px-4 focus:outline-none focus:ring-2 focus:ring-sky-500/50 transition-all placeholder:text-slate-700 text-center text-xl font-bold text-white"
-                    />
-                  </div>
+                  {/* Pillar Number - Appears when floor is selected (it's always selected by default, but we can animate it) */}
+                  <AnimatePresence>
+                    {floor && (
+                      <motion.div 
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        className="space-y-4 overflow-hidden"
+                      >
+                        <label className="text-xs font-bold text-slate-500 uppercase tracking-[0.2em] ml-1">구역 / 기둥 번호</label>
+                        <input 
+                          type="text"
+                          placeholder="예: A-03, 12번 기둥"
+                          value={pillar}
+                          onChange={(e) => setPillar(e.target.value)}
+                          className="w-full h-16 bg-slate-900/50 border border-white/5 rounded-2xl px-4 focus:outline-none focus:ring-2 focus:ring-sky-500/50 transition-all placeholder:text-slate-700 text-center text-xl font-bold text-white"
+                        />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
 
                   {/* Photo Upload */}
                   <div className="space-y-4">
