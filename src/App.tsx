@@ -236,8 +236,8 @@ export default function App() {
                                 floor === f 
                                   ? 'bg-sky-500 border-sky-400 text-white shadow-[0_0_15px_rgba(14,165,233,0.4)] scale-[1.02] z-10' 
                                   : isUnderground 
-                                    ? 'bg-slate-800/40 border-white/5 text-slate-400 hover:bg-slate-800/60'
-                                    : 'bg-slate-700/20 border-white/5 text-slate-300 hover:bg-slate-700/40'
+                                    ? 'bg-slate-800/30 border-white/5 text-slate-500 hover:bg-slate-800/50'
+                                    : 'bg-slate-700/50 border-white/10 text-slate-300 hover:bg-slate-700/70'
                               } ${f === '지상 1층' ? 'mb-4' : ''}`}
                             >
                               {f}
