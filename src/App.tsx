@@ -14,8 +14,8 @@ import {
   Info,
   X,
   Navigation,
-  Search,
-  ArrowDown
+  Star,
+  Smile
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -110,30 +110,30 @@ export default function App() {
       {/* Header */}
       <header className="p-6 flex items-center justify-between border-b border-white/5 bg-[#0F172A]/80 backdrop-blur-md sticky top-0 z-50">
         <div className="flex items-center gap-4">
-          <div className="relative w-12 h-12 flex items-center justify-center">
-            {/* 1. Magnifying Glass (Search) */}
-            <Search className="w-12 h-12 text-sky-400 opacity-90" strokeWidth={1.5} />
+          <div className="relative w-12 h-12 flex items-center justify-center bg-sky-200 rounded-2xl shadow-inner overflow-hidden">
+            {/* Cute White Car Body */}
+            <div className="relative z-10 translate-y-1">
+              <Car className="w-8 h-8 text-white fill-white" strokeWidth={1.5} />
+              {/* Smile */}
+              <div className="absolute top-4 left-1/2 -translate-x-1/2">
+                <Smile className="w-3 h-3 text-sky-400" />
+              </div>
+            </div>
             
-            {/* 2. Pin Drop with 'P' inside the focus */}
-            <div className="absolute top-1 left-2 flex items-center justify-center">
-              <div className="relative">
-                <MapPin className="w-6 h-6 text-rose-500 fill-rose-500/20" />
-                <span className="absolute top-[2px] left-1/2 -translate-x-1/2 text-[9px] font-black text-white">P</span>
+            {/* Star Marker with P */}
+            <div className="absolute top-1 right-1 z-20">
+              <div className="relative flex items-center justify-center">
+                <Star className="w-6 h-6 text-yellow-400 fill-yellow-400 shadow-sm" />
+                <span className="absolute text-[10px] font-black text-sky-800">P</span>
               </div>
             </div>
 
-            {/* 3. Car Icon Below */}
-            <div className="absolute -bottom-1 -right-1 bg-[#0F172A] rounded-lg p-1 shadow-lg border border-white/10">
-              <Car className="w-5 h-5 text-white" />
-            </div>
-
-            {/* 4. Neon Yellow Arrow */}
-            <div className="absolute top-6 right-1 rotate-[45deg]">
-              <ArrowDown className="w-3 h-3 text-yellow-400 animate-pulse" />
-            </div>
+            {/* Background Pastel Bubbles */}
+            <div className="absolute -bottom-2 -left-2 w-8 h-8 bg-white/20 rounded-full blur-sm" />
+            <div className="absolute -top-1 -right-1 w-6 h-6 bg-white/10 rounded-full blur-sm" />
           </div>
           <h1 className="text-xl font-black tracking-tighter text-white">
-            내 차 어디 있지<span className="text-sky-500">?</span>
+            내 차 어디 있지<span className="text-sky-300">?</span>
           </h1>
         </div>
         {parkingData && !isRecording && (
