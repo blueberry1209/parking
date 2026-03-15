@@ -157,25 +157,25 @@ export default function App() {
                 </div>
 
                 <div className="space-y-8">
-                  {/* Floor Selection - Grid of Buttons for easier one-hand use */}
-                  <div className="space-y-4">
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-[0.2em] ml-1">층수 선택</label>
-                    <div className="grid grid-cols-2 gap-4">
-                      {FLOORS.map((f) => (
-                        <button
-                          key={f}
-                          onClick={() => setFloor(f)}
-                          className={`h-16 rounded-2xl font-bold transition-all border-2 ${
-                            floor === f 
-                              ? 'bg-sky-500 border-sky-400 text-white shadow-[0_0_20px_rgba(14,165,233,0.4)] scale-[1.02]' 
-                              : 'bg-slate-900/50 border-white/5 text-slate-500 hover:bg-slate-900 hover:border-white/10'
-                          }`}
-                        >
-                          {f}
-                        </button>
-                      ))}
+                    {/* Floor Selection - Grid of Buttons for easier one-hand use */}
+                    <div className="space-y-4">
+                      <label className="text-xs font-bold text-slate-500 uppercase tracking-[0.2em] ml-1">층수 선택</label>
+                      <div className="grid grid-cols-2 gap-4">
+                        {FLOORS.map((f) => (
+                          <button
+                            key={f}
+                            onClick={() => setFloor(f)}
+                            className={`h-16 rounded-2xl font-bold transition-all border-2 ${
+                              floor === f 
+                                ? 'bg-sky-500 border-sky-400 text-white shadow-[0_0_25px_rgba(14,165,233,0.5)] scale-[1.02] z-10' 
+                                : 'bg-[#1e293b]/40 border-white/5 text-slate-500 hover:bg-[#1e293b]/60 hover:border-white/10'
+                            }`}
+                          >
+                            {f}
+                          </button>
+                        ))}
+                      </div>
                     </div>
-                  </div>
 
                   {/* Pillar Number */}
                   <div className="space-y-4">
@@ -223,7 +223,6 @@ export default function App() {
                     <input 
                       type="file" 
                       accept="image/*" 
-                      capture="environment" 
                       ref={fileInputRef}
                       onChange={handlePhotoChange}
                       className="hidden"

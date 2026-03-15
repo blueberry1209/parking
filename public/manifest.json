@@ -1,0 +1,25 @@
+{
+  "short_name": "내차어디",
+  "name": "내 차 어디 있지? - 스마트 주차 기록",
+  "icons": [
+    {
+      "src": "https://ais-dev-prcahqocl6xdubfmlugfzb-105732886909.asia-northeast1.run.app/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "https://picsum.photos/seed/car-app/192/192",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "https://picsum.photos/seed/car-app/512/512",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#0F172A",
+  "background_color": "#0F172A"
+}
