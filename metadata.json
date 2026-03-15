@@ -1,0 +1,5 @@
+{
+  "name": "WhereIsMyCar (내 차 어디 있지?)",
+  "description": "주차 위치를 잊어버리지 않도록 층수, 기둥 번호, 사진을 기록하고 나중에 쉽게 확인하는 주차 위치 기록 서비스",
+  "requestFramePermissions": ["camera"]
+}
