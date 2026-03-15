@@ -224,7 +224,7 @@ export default function App() {
                 <div className="space-y-8">
                     {/* Building-shaped Floor Selection */}
                     <div className="space-y-4">
-                      <label className="text-xs font-bold text-slate-500 uppercase tracking-[0.2em] ml-1">층수 선택 (빌딩)</label>
+                      <label className="text-xs font-bold text-slate-500 uppercase tracking-[0.2em] ml-1">층수 선택 (필수)</label>
                       <div className="flex flex-col gap-2 bg-slate-900/30 p-4 rounded-[24px] border border-white/5">
                         {FLOORS.map((f) => {
                           const isUnderground = f.startsWith('지하');
@@ -329,7 +329,7 @@ export default function App() {
                 <div className="mt-10 space-y-3">
                   <button 
                     onClick={handleSave}
-                    disabled={!pillar && !photo}
+                    disabled={!floor}
                     className="w-full h-16 bg-sky-500 hover:bg-sky-400 disabled:opacity-50 disabled:hover:bg-sky-500 text-white font-bold text-lg rounded-2xl shadow-lg shadow-sky-500/20 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
                   >
                     <CheckCircle2 className="w-6 h-6" />
