@@ -13,7 +13,9 @@ import {
   ChevronDown, 
   Info,
   X,
-  Navigation
+  Navigation,
+  Search,
+  ArrowDown
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -107,11 +109,32 @@ export default function App() {
     <div className="min-h-screen bg-[#0F172A] text-slate-100 font-sans selection:bg-sky-500/30">
       {/* Header */}
       <header className="p-6 flex items-center justify-between border-b border-white/5 bg-[#0F172A]/80 backdrop-blur-md sticky top-0 z-50">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-sky-500 flex items-center justify-center shadow-lg shadow-sky-500/20">
-            <Car className="text-white w-6 h-6" />
+        <div className="flex items-center gap-4">
+          <div className="relative w-12 h-12 flex items-center justify-center">
+            {/* 1. Magnifying Glass (Search) */}
+            <Search className="w-12 h-12 text-sky-400 opacity-90" strokeWidth={1.5} />
+            
+            {/* 2. Pin Drop with 'P' inside the focus */}
+            <div className="absolute top-1 left-2 flex items-center justify-center">
+              <div className="relative">
+                <MapPin className="w-6 h-6 text-rose-500 fill-rose-500/20" />
+                <span className="absolute top-[2px] left-1/2 -translate-x-1/2 text-[9px] font-black text-white">P</span>
+              </div>
+            </div>
+
+            {/* 3. Car Icon Below */}
+            <div className="absolute -bottom-1 -right-1 bg-[#0F172A] rounded-lg p-1 shadow-lg border border-white/10">
+              <Car className="w-5 h-5 text-white" />
+            </div>
+
+            {/* 4. Neon Yellow Arrow */}
+            <div className="absolute top-6 right-1 rotate-[45deg]">
+              <ArrowDown className="w-3 h-3 text-yellow-400 animate-pulse" />
+            </div>
           </div>
-          <h1 className="text-xl font-bold tracking-tight">내 차 어디 있지?</h1>
+          <h1 className="text-xl font-black tracking-tighter text-white">
+            내 차 어디 있지<span className="text-sky-500">?</span>
+          </h1>
         </div>
         {parkingData && !isRecording && (
           <button 
